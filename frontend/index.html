@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Digital queue management for health camps">
+  <title>Digital Queue Management System | Health Camps</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a class="brand" href="#home" data-view="home" aria-label="Digital Queue Management System home">
+        <span class="brand-mark" aria-hidden="true">+</span>
+        <span><strong>QueueCare</strong><small>Health camp services</small></span>
+      </a>
+      <nav class="main-nav" aria-label="Main navigation">
+        <button class="nav-link active" data-view="home">Home</button>
+        <button class="nav-link" data-view="register">Get a token</button>
+        <button class="nav-link" data-view="status">Check queue</button>
+        <button class="nav-link" data-view="admin">Admin</button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section id="home" class="view active-view">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">DIGITAL QUEUE MANAGEMENT SYSTEM</p>
+          <h1>A calmer way to care for every visitor.</h1>
+          <p class="hero-text">Manage health camp registrations, tokens and waiting times from one simple screen. Spend less time in line and more time with your care team.</p>
+          <div class="hero-actions">
+            <button class="button button-primary" data-view="register">Get a token <span aria-hidden="true">→</span></button>
+            <button class="button button-secondary" data-view="status">Check queue <span aria-hidden="true">⌁</span></button>
+          </div>
+          <div class="trust-row"><span>✓ Simple registration</span><span>✓ Live queue updates</span><span>✓ No paper needed</span></div>
+        </div>
+        <div class="hero-panel" aria-label="Today's queue overview">
+          <div class="panel-top"><span class="live-dot"></span><span>Today’s camp</span><span class="panel-date" id="todayDate"></span></div>
+          <div class="pulse-icon" aria-hidden="true">♥</div>
+          <p class="panel-label">Now serving</p>
+          <strong class="current-token hero-token" id="homeCurrentToken">--</strong>
+          <div class="mini-stats"><div><strong id="homeWaitingCount">0</strong><span>waiting</span></div><div><strong id="homeRegisteredCount">0</strong><span>registered</span></div><div><strong id="homeAvgWait">0 min</strong><span>estimated</span></div></div>
+        </div>
+      </div>
+      <div class="container info-strip"><div><span class="info-icon">①</span><div><strong>Register once</strong><p>Share basic details and receive your unique token.</p></div></div><div><span class="info-icon">②</span><div><strong>Follow your place</strong><p>Check your position from any device at the camp.</p></div></div><div><span class="info-icon">③</span><div><strong>Be ready when called</strong><p>Our team advances the queue as patients are served.</p></div></div></div>
+    </section>
+
+    <section id="register" class="view">
+      <div class="container narrow-container">
+        <div class="section-heading"><p class="eyebrow">PATIENT REGISTRATION</p><h2>Get your health camp token</h2><p>Enter your details below. Your token will be ready in a moment.</p></div>
+        <div class="form-card">
+          <form id="registrationForm" novalidate>
+            <div class="form-grid">
+              <label>Patient name<input id="patientName" name="patientName" type="text" placeholder="e.g. Priya Sharma" required></label>
+              <label>Age<input id="patientAge" name="patientAge" type="number" min="1" max="120" placeholder="e.g. 28" required></label>
+              <label>Gender<select id="patientGender" name="patientGender" required><option value="">Select gender</option><option>Female</option><option>Male</option><option>Other</option><option>Prefer not to say</option></select></label>
+              <label>Phone number<input id="patientPhone" name="patientPhone" type="tel" inputmode="numeric" placeholder="10-digit number" pattern="[0-9]{10}" required></label>
+              <label class="full-width">Health problem<input id="healthProblem" name="healthProblem" type="text" placeholder="e.g. Fever, check-up, skin concern" required></label>
+              <label class="full-width">Department<select id="department" name="department" required><option value="">Choose a department</option><option>General Medicine</option><option>Pediatrics</option><option>Dental Care</option><option>Eye Care</option><option>Women's Health</option></select></label>
+            </div>
+            <p class="form-note">Your information is stored temporarily on this device for this college project.</p>
+            <button class="button button-primary full-button" type="submit">Register and get token <span aria-hidden="true">→</span></button>
+          </form>
+          <div id="registrationResult" class="result-card hidden" role="status"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="status" class="view">
+      <div class="container narrow-container">
+        <div class="section-heading"><p class="eyebrow">QUEUE STATUS</p><h2>Know when it’s your turn</h2><p>Enter your token number to see the latest queue information.</p></div>
+        <div class="lookup-card"><form id="statusForm" class="lookup-form"><label for="statusToken">Your token number</label><div class="lookup-input"><span aria-hidden="true">#</span><input id="statusToken" type="number" min="1" placeholder="e.g. 12" required><button class="button button-primary" type="submit">Check status</button></div></form><div id="statusResult" class="status-result" role="status"><div class="empty-state"><span>⌁</span><strong>Waiting for a token</strong><p>Enter your token above to view your queue position.</p></div></div></div>
+      </div>
+    </section>
+
+    <section id="admin" class="view">
+      <div class="container admin-container">
+        <div class="section-heading admin-heading"><div><p class="eyebrow">ADMIN DASHBOARD</p><h2>Camp queue control</h2><p>Move the queue forward and keep an eye on today’s registrations.</p></div><button id="resetQueueButton" class="button button-danger">Reset queue</button></div>
+        <div class="dashboard-stats"><div class="dashboard-stat"><span>Total registered</span><strong id="adminTotal">0</strong><small>patients today</small></div><div class="dashboard-stat accent"><span>Now serving</span><strong id="adminCurrent">--</strong><small>current token</small></div><div class="dashboard-stat"><span>Waiting patients</span><strong id="adminWaiting">0</strong><small>in the queue</small></div><div class="dashboard-stat"><span>Estimated wait</span><strong id="adminWait">0 min</strong><small>at 10 min per patient</small></div></div>
+        <div class="admin-content"><div class="table-card"><div class="table-heading"><div><h3>Registered patients</h3><p>Private view for camp staff</p></div><span id="queueStatusBadge" class="badge">Queue empty</span></div><div class="table-wrap"><table><thead><tr><th>Token</th><th>Patient</th><th>Department</th><th>Problem</th><th>Status</th></tr></thead><tbody id="patientTableBody"><tr><td colspan="5" class="table-empty">No patients registered yet.</td></tr></tbody></table></div></div><aside class="next-card"><span class="next-icon">→</span><h3>Ready for the next patient?</h3><p>Advance the queue when the currently called patient has been attended to.</p><button id="nextPatientButton" class="button button-primary full-button">Call next patient <span aria-hidden="true">→</span></button><p id="adminMessage" class="admin-message" role="status"></p></aside></div>
+      </div>
+    </section>
+  </main>
+  <footer><div class="container"><span>QueueCare</span><span>Digital queue management for health camps</span><span>Project demo · Local storage only</span></div></footer>
+  <script src="script.js"></script>
+</body>
+</html>
