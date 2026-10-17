@@ -42,33 +42,34 @@
           </div>
           <div class="trust-row"><span>✓ Simple registration</span><span>✓ Live queue updates</span><span>✓ No paper needed</span></div>
         </div>
-        <div class="hero-panel" aria-label="Today's queue overview">
-          <div class="panel-top"><span class="live-dot"></span><span>Today’s camp</span><span class="panel-date" id="todayDate"></span></div>
+        <div class="hero-panel" aria-label="Current queue overview">
+          <div class="panel-top"><span class="live-dot"></span><span>QueueCare demo</span><span class="panel-date" id="todayDate"></span></div>
           <div class="pulse-icon" aria-hidden="true">♥</div>
-          <p class="panel-label">Now serving</p>
+          <p class="panel-label">Selected queue · <span id="homeQueueHospital">Legacy / unassigned</span></p>
           <strong class="current-token hero-token" id="homeCurrentToken">--</strong>
           <div class="mini-stats"><div><strong id="homeWaitingCount">0</strong><span>waiting</span></div><div><strong id="homeRegisteredCount">0</strong><span>registered</span></div><div><strong id="homeAvgWait">0 min</strong><span>estimated</span></div></div>
         </div>
       </div>
       <div class="container emergency-banner"><div><strong>Medical emergency?</strong><span>Do not wait for a normal queue token. Seek immediate medical help.</span></div><button class="button button-danger" data-view="emergency">Emergency help</button></div>
-      <div class="container info-strip"><div><span class="info-icon">①</span><div><strong>Register once</strong><p>Share basic details and receive your unique token.</p></div></div><div><span class="info-icon">②</span><div><strong>Follow your place</strong><p>Check your position from any device at the camp.</p></div></div><div><span class="info-icon">③</span><div><strong>Be ready when called</strong><p>Our team advances the queue as patients are served.</p></div></div></div>
+      <div class="container info-strip"><div><span class="info-icon">①</span><div><strong>Choose a hospital</strong><p>Register with the hospital and department you need.</p></div></div><div><span class="info-icon">②</span><div><strong>Follow your place</strong><p>Check your token in that hospital’s queue.</p></div></div><div><span class="info-icon">③</span><div><strong>Be ready when called</strong><p>Hospital staff advance each queue independently.</p></div></div></div>
     </section>
 
     <section id="register" class="view">
       <div class="container narrow-container">
         <div class="section-heading"><p class="eyebrow">PATIENT REGISTRATION</p><h2>Get your health camp token</h2><p>Enter your details below. Your token will be ready in a moment.</p></div>
-        <div class="capacity-panel" aria-live="polite"><div><span>Registered today</span><strong id="currentPatientCount">0</strong></div><div><span>Maximum tokens</span><strong id="maxTokenCount">50</strong></div><div><span>Remaining</span><strong id="remainingTokenCount">50</strong></div></div>
+        <div class="capacity-panel" aria-live="polite"><div><span>Registered in queue</span><strong id="currentPatientCount">0</strong></div><div><span>Maximum tokens</span><strong id="maxTokenCount">50</strong></div><div><span>Remaining</span><strong id="remainingTokenCount">50</strong></div></div>
         <div class="form-card">
           <form id="registrationForm" novalidate>
             <div class="form-grid">
-              <label>Patient name<input id="patientName" name="patientName" type="text" title="Use letters and spaces only." autocomplete="name" placeholder="e.g. Priya Sharma" required></label>
+              <label class="full-width">Hospital<select id="registrationHospital" name="hospitalKey" required><option value="">Choose a hospital</option></select></label>
+              <label>Patient name<input id="patientName" name="patientName" type="text" maxlength="100" title="Use letters and spaces only." autocomplete="name" placeholder="e.g. Priya Sharma" required></label>
               <label>Age<input id="patientAge" name="patientAge" type="text" inputmode="numeric" pattern="[0-9]+" maxlength="3" title="Enter an age from 1 to 120 using numbers only." placeholder="e.g. 28" required></label>
               <label>Gender<select id="patientGender" name="patientGender" required><option value="">Select gender</option><option>Female</option><option>Male</option><option>Other</option><option>Prefer not to say</option></select></label>
               <label>Phone number<input id="patientPhone" name="patientPhone" type="tel" inputmode="numeric" autocomplete="tel" maxlength="10" placeholder="10-digit number" pattern="[0-9]{10}" title="Enter exactly 10 digits." required></label>
-              <label class="full-width">Health problem<input id="healthProblem" name="healthProblem" type="text" placeholder="e.g. Fever, check-up, skin concern" required></label>
-              <label class="full-width">Department<select id="department" name="department" required><option value="">Choose a department</option><option>General Medicine</option><option>Pediatrics</option><option>Dental Care</option><option>Eye Care</option><option>Women's Health</option></select></label>
+              <label class="full-width">Health problem<input id="healthProblem" name="healthProblem" type="text" maxlength="500" placeholder="e.g. Fever, check-up, skin concern" required></label>
+              <label class="full-width">Department<select id="department" name="department" required disabled><option value="">Choose a hospital first</option></select></label>
             </div>
-            <p class="form-note">Your information is stored temporarily on this device for this college project.</p>
+            <p id="registrationHospitalNote" class="form-note">Local demo only: enter test data, not real patient details. Department choices depend on the selected facility; service availability has not been independently verified. Call before visiting. Choose “Other / Not Listed” if your need is not shown.</p>
             <p id="registrationLimitMessage" class="form-error hidden" role="alert">Today's queue is full. Please try again later or contact support.</p>
             <button class="button button-primary full-button" type="submit">Register and get token <span aria-hidden="true">→</span></button>
           </form>
@@ -80,15 +81,15 @@
     <section id="status" class="view">
       <div class="container narrow-container">
         <div class="section-heading"><p class="eyebrow">QUEUE STATUS</p><h2>Know when it’s your turn</h2><p>Enter your token number to see the latest queue information.</p></div>
-        <div class="lookup-card"><form id="statusForm" class="lookup-form"><label for="statusToken">Your token number</label><div class="lookup-input"><span aria-hidden="true">#</span><input id="statusToken" type="number" min="1" placeholder="e.g. 12" required><button class="button button-primary" type="submit">Check status</button></div></form><div id="statusResult" class="status-result" role="status"><div class="empty-state"><span>⌁</span><strong>Waiting for a token</strong><p>Enter your token above to view your queue position.</p></div></div></div>
+        <div class="lookup-card"><form id="statusForm" class="lookup-form"><label for="statusHospital">Hospital queue</label><select id="statusHospital" required><option value="">Choose the hospital on your token</option></select><label for="statusToken">Your token number</label><div class="lookup-input"><span aria-hidden="true">#</span><input id="statusToken" type="number" min="1" placeholder="e.g. 12" required><button class="button button-primary" type="submit">Check status</button></div></form><div id="statusResult" class="status-result" role="status"><div class="empty-state"><span>⌁</span><strong>Waiting for a token</strong><p>Choose the hospital printed on your token and enter its number.</p></div></div></div>
       </div>
     </section>
 
     <section id="facilities" class="view">
       <div class="container facilities-container">
-        <div class="section-heading"><p class="eyebrow">CARE DIRECTORY</p><h2>Hospitals &amp; Clinics</h2><p>Browse facilities by care category. Listings below are sample data until a verified location service is connected.</p></div>
+        <div class="section-heading"><p class="eyebrow">CARE DIRECTORY · SULLIA</p><h2>Hospitals &amp; Clinics</h2><p>Browse hospitals, clinics and specialist services in and around Sullia.</p></div>
         <div id="facilityGroups" class="facility-groups" aria-live="polite"></div>
-        <p class="directory-note">Sample listings are for layout demonstration only. Confirm facility locations and contact details with a trusted local source.</p>
+        <p class="directory-note">This directory is based on the linked sources and listings supplied to us; details have not been independently verified and may change. Call ahead to confirm contact numbers, services, clinic schedules and current emergency availability. No dedicated pediatric orthopaedic clinic listing was verified here. In an emergency in India, call <a href="tel:112">112</a>.</p>
       </div>
     </section>
 
@@ -109,13 +110,13 @@
         <div class="form-card">
           <form id="supportForm" novalidate>
             <div class="form-grid">
-              <label>Your name<input id="supportName" name="supportName" type="text" autocomplete="name" required></label>
+              <label>Your name<input id="supportName" name="supportName" type="text" maxlength="100" autocomplete="name" required></label>
               <label>Phone number<input id="supportPhone" name="supportPhone" type="tel" inputmode="numeric" autocomplete="tel" maxlength="10" pattern="[0-9]{10}" title="Enter exactly 10 digits." required></label>
               <label class="full-width">Type of issue<select id="supportIssue" name="supportIssue" required><option value="">Choose an issue</option><option>Appointment problem</option><option>Token problem</option><option>Long waiting time</option><option>Registration problem</option><option>General complaint</option><option>Other</option></select></label>
-              <label id="supportOtherWrap" class="full-width hidden">Please specify<input id="supportOther" name="supportOther" type="text"></label>
-              <label class="full-width">Complaint or message<textarea id="supportMessage" name="supportMessage" rows="5" required></textarea></label>
+              <label id="supportOtherWrap" class="full-width hidden">Please specify<input id="supportOther" name="supportOther" type="text" maxlength="143"></label>
+              <label class="full-width">Complaint or message<textarea id="supportMessage" name="supportMessage" rows="5" maxlength="2000" required></textarea></label>
             </div>
-            <p class="form-note">Requests are saved in this browser for the project demo and are not sent to a support team.</p>
+            <p class="form-note">Requests are saved in the camp database. This project demo does not send alerts or provide real-time monitoring.</p>
             <button class="button button-primary full-button" type="submit">Submit request <span aria-hidden="true">→</span></button>
           </form>
           <div id="supportResult" class="result-card hidden" role="status"></div>
@@ -125,14 +126,16 @@
 
     <section id="admin" class="view">
       <div class="container admin-container">
-        <div class="section-heading admin-heading"><div><p class="eyebrow">ADMIN DASHBOARD</p><h2>Camp queue control</h2><p>Move the queue forward and keep an eye on today’s registrations.</p></div><button id="resetQueueButton" class="button button-danger">Reset queue</button></div>
-        <div class="dashboard-stats"><div class="dashboard-stat"><span>Total registered</span><strong id="adminTotal">0</strong><small>patients today</small></div><div class="dashboard-stat accent"><span>Now serving</span><strong id="adminCurrent">--</strong><small>current token</small></div><div class="dashboard-stat"><span>Waiting patients</span><strong id="adminWaiting">0</strong><small>in the queue</small></div><div class="dashboard-stat"><span>Estimated wait</span><strong id="adminWait">0 min</strong><small>at 10 min per patient</small></div></div>
-        <div class="limit-config"><div><strong>Daily token limit</strong><p>Set the maximum number of patients who can register today.</p></div><form id="limitForm" class="limit-form"><label for="maxTokenInput">Maximum tokens</label><input id="maxTokenInput" type="number" min="1" max="1000" required><button class="button button-secondary" type="submit">Save limit</button></form><p class="limit-summary"><span>Registered <strong id="adminRegisteredCount">0</strong></span><span>Maximum <strong id="adminMaxTokenCount">50</strong></span><span>Remaining <strong id="adminRemainingTokenCount">50</strong></span></p></div>
-        <div class="admin-content"><div class="table-card"><div class="table-heading"><div><h3>Registered patients</h3><p>Private view for camp staff</p></div><span id="queueStatusBadge" class="badge">Queue empty</span></div><div class="table-wrap"><table><thead><tr><th>Token</th><th>Patient</th><th>Department</th><th>Problem</th><th>Status</th></tr></thead><tbody id="patientTableBody"><tr><td colspan="5" class="table-empty">No patients registered yet.</td></tr></tbody></table></div></div><aside class="next-card"><span class="next-icon">→</span><h3>Ready for the next patient?</h3><p>Advance the queue when the currently called patient has been attended to.</p><button id="nextPatientButton" class="button button-primary full-button">Call next patient <span aria-hidden="true">→</span></button><p id="adminMessage" class="admin-message" role="status"></p></aside></div>
+        <div class="section-heading admin-heading"><div><p class="eyebrow">ADMIN DASHBOARD</p><h2>Hospital queue control</h2><p>Select a hospital to review and manage only its registrations.</p></div><button id="resetQueueButton" class="button button-danger">Reset this queue</button></div>
+        <p class="directory-note">Local demo only. Admin controls are not password-protected. Reset permanently deletes patient and token records for the selected queue.</p>
+        <label class="admin-hospital-select" for="adminHospital">Manage queue<select id="adminHospital"><option value="">Loading hospital queues...</option></select></label>
+        <div class="dashboard-stats"><div class="dashboard-stat"><span>Total registered</span><strong id="adminTotal">0</strong><small>in this queue</small></div><div class="dashboard-stat accent"><span>Now serving</span><strong id="adminCurrent">--</strong><small>current token</small></div><div class="dashboard-stat"><span>Waiting patients</span><strong id="adminWaiting">0</strong><small>in the queue</small></div><div class="dashboard-stat"><span>Estimated wait</span><strong id="adminWait">0 min</strong><small>at 10 min per patient</small></div></div>
+        <div class="limit-config"><div><strong>Queue registration limit</strong><p>Set the maximum number of patients who can register before this queue is reset.</p></div><form id="limitForm" class="limit-form"><label for="maxTokenInput">Maximum tokens</label><input id="maxTokenInput" type="number" min="1" max="1000" required><button class="button button-secondary" type="submit">Save limit</button></form><p class="limit-summary"><span>Registered <strong id="adminRegisteredCount">0</strong></span><span>Maximum <strong id="adminMaxTokenCount">50</strong></span><span>Remaining <strong id="adminRemainingTokenCount">50</strong></span></p></div>
+        <div class="admin-content"><div class="table-card"><div class="table-heading"><div><h3>Registered patients</h3><p>Queue details for camp staff</p></div><span id="queueStatusBadge" class="badge">Queue empty</span></div><div class="table-wrap"><table><thead><tr><th>Token</th><th>Patient</th><th>Department</th><th>Problem</th><th>Status</th></tr></thead><tbody id="patientTableBody"><tr><td colspan="5" class="table-empty">No patients registered yet.</td></tr></tbody></table></div></div><aside class="next-card"><span class="next-icon">→</span><h3>Ready for the next patient?</h3><p>Advance the queue when the currently called patient has been attended to.</p><button id="nextPatientButton" class="button button-primary full-button">Call next patient <span aria-hidden="true">→</span></button><p id="adminMessage" class="admin-message" role="status"></p></aside></div>
       </div>
     </section>
   </main>
-  <footer><div class="container"><span>QueueCare</span><span>Digital queue management for health camps</span><span>Project demo · Local storage only</span></div></footer>
+  <footer><div class="container"><span>QueueCare</span><span>Digital queue management for health camps</span><span>Project demo · SQLite queue</span></div></footer>
   <script src="script.js"></script>
 </body>
 </html>

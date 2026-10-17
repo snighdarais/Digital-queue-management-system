@@ -25,6 +25,8 @@ button:disabled:hover { transform: none; box-shadow: none; }
 .limit-summary { display: flex; flex-wrap: wrap; gap: 22px; grid-column: 1 / -1; margin: 0; padding-top: 13px; border-top: 1px solid var(--line); color: var(--muted); font-size: 11px; }
 .limit-summary strong { color: var(--ink); }
 .facilities-container { width: min(1120px, calc(100% - 40px)); }
+.admin-hospital-select { display: grid; gap: 7px; max-width: 480px; margin: 0 0 18px; color: var(--muted); font-size: 12px; font-weight: 700; }
+.admin-hospital-select select { width: 100%; padding: 11px 12px; border: 1px solid var(--line); border-radius: 5px; background: var(--white); color: var(--ink); }
 .facility-groups { display: grid; gap: 24px; }
 .facility-group { scroll-margin-top: 100px; }
 .facility-group h3 { margin: 0 0 12px; font: 600 20px 'Space Grotesk', sans-serif; }
@@ -34,6 +36,9 @@ button:disabled:hover { transform: none; box-shadow: none; }
 .facility-card p { display: grid; gap: 3px; margin: 10px 0 0; color: var(--muted); font-size: 12px; overflow-wrap: anywhere; }
 .facility-card p strong { color: var(--ink); font-size: 10px; text-transform: uppercase; }
 .facility-demo-label { color: var(--teal-dark); font-size: 10px; font-weight: 700; }
+.facility-note { color: var(--coral) !important; }
+.facility-sources span { display: flex; flex-wrap: wrap; gap: 4px 10px; }
+.facility-sources a, .directory-note a { color: var(--teal-dark); text-decoration: underline; text-underline-offset: 2px; }
 .facility-empty, .directory-note { color: var(--muted); font-size: 12px; line-height: 1.6; }
 .directory-note { margin: 24px 0 0; padding-top: 16px; border-top: 1px solid var(--line); }
 .emergency-card { padding: 24px; border: 1px solid #f0d1cc; border-top: 4px solid var(--coral); border-radius: 8px; background: var(--white); }
